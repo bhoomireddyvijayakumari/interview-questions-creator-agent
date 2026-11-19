@@ -218,19 +218,12 @@ This requires the configured PDF to exist at the path specified in the test scri
 ## Screenshots
 
 
-1. **Main upload page** — show the application title and PDF upload control.
-2. **PDF selected / upload completed** — show the selected document and uploaded PDF preview.
-3. **Analysis in progress** — show the loading state while questions and answers are being generated.
-4. **Generated results** — show the successful completion state and CSV download action (after ensuring the UI correctly labels the CSV output).
-5. **CSV output** — optionally show a spreadsheet view of `QA.csv` with the Question and Answer columns, using non-sensitive sample content.
 
-
-```markdown
 ![Interview Question Creator upload page](screenshots/dashboard.png)
 ![Analysis in progress](screenshots/pdf file analysis.png)
 ![Generated question-answer CSV](screenshots/generated questions.png)
 ![CSV question and answer output](screenshots/questions_csv.png)
-```
+
 
 ---
 
