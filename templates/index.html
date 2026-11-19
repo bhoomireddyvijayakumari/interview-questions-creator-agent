@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Interview Question Creator</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
+    <style>
+
+        body {
+            background-color: #212529;
+        }
+
+        #result,
+        #download {
+            display: none;
+        }
+
+        .font-large {
+            font-size: 60px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+        }
+
+        #loader {
+            padding: 50px;
+        }
+
+        #view-pdf {
+            border-radius: 8px;
+        }
+
+        .heading {
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .upload-section {
+            min-height: 200px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <section>
+
+        <div class="container-fluid">
+
+            <div class="row">
+
+                <div class="col-sm-12 text-center p-5 text-white">
+
+                    <h3 class="heading">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        Interview Question Creator
+                    </h3>
+
+                    <p class="text-secondary">
+                        Upload your PDF and generate interview questions automatically.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Upload Section -->
+    <section class="mb-4">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-sm-12">
+
+                    <div class="card p-5 shadow m-3 upload-section">
+
+                        <div class="mb-3">
+
+                            <label for="pdf-file" class="form-label fw-bold">
+                                Upload your PDF
+                            </label>
+
+                            <div class="input-group mb-3">
+
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    id="pdf-file"
+                                    accept=".pdf,application/pdf"
+                                >
+
+                                <span class="input-group-text">
+                                    PDF files only
+                                </span>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Select the PDF document you want to analyze.
+                            </small>
+
+                        </div>
+
+
+                        <div class="mb-3 text-end">
+
+                            <button
+                                type="button"
+                                id="upload-btn"
+                                class="btn btn-md btn-success"
+                            >
+
+                                <i class="fa-solid fa-upload"></i>
+                                Upload PDF
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- Result Section -->
+    <section id="result">
+
+        <div class="container">
+
+            <div class="row">
+
+                <!-- PDF Preview -->
+                <div class="col-sm-6">
+
+                    <div class="card shadow p-3 m-3">
+
+                        <h5 class="text-center mb-3">
+                            <i class="fa-solid fa-file-pdf text-danger"></i>
+                            Uploaded PDF
+                        </h5>
+
+                        <embed
+                            id="view-pdf"
+                            src=""
+                            type="application/pdf"
+                            width="100%"
+                            height="600px"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Analysis and Download -->
+                <div class="col-sm-6">
+
+                    <div class="card shadow p-5 m-3 text-center">
+
+                        <!-- Loading Spinner -->
+                        <div id="loader">
+
+                            <i class="fa-solid fa-spinner fa-spin-pulse font-large text-success"></i>
+
+                            <h5 class="mt-4">
+                                Analyzing your PDF...
+                            </h5>
+
+                            <p class="text-muted">
+                                Please wait while we generate interview questions.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- Download Section -->
+                        <div id="download">
+
+                            <i class="fa-solid fa-circle-check text-success font-large"></i>
+
+                            <h5 class="mt-4">
+                                Questions Generated Successfully!
+                            </h5>
+
+                            <p class="text-muted">
+                                Your interview questions CSV is ready.
+                            </p>
+
+                            <a
+                                href=""
+                                id="download-btn"
+                                class="btn btn-warning mt-3"
+                                download
+                            >
+
+                                <i class="fa-solid fa-download"></i>
+                                Download Questions
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- JavaScript Libraries -->
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    <!-- Custom JavaScript -->
+    <script>
+
+        // DOM Elements
+
+        const result = document.getElementById('result');
+
+        const loader = document.getElementById('loader');
+
+        const download = document.getElementById('download');
+
+        const viewPdf = document.getElementById('view-pdf');
+
+        const downloadBtn = document.getElementById('download-btn');
+
+        const uploadBtn = document.getElementById('upload-btn');
+
+        const fileInput = document.getElementById('pdf-file');
+
+
+
+        // Upload PDF Event
+
+        uploadBtn.addEventListener('click', async function (event) {
+
+            event.preventDefault();
+
+            const file = fileInput.files[0];
+
+
+            // Check whether file is selected
+
+            if (!file) {
+
+                Swal.fire({
+
+                    icon: 'warning',
+
+                    title: 'No PDF Selected',
+
+                    text: 'Please select a PDF file before uploading.'
+
+                });
+
+                return;
+
+            }
+
+
+            // Check file extension and MIME type
+
+            if (
+                file.type !== 'application/pdf' &&
+                !file.name.toLowerCase().endsWith('.pdf')
+            ) {
+
+                Swal.fire({
+
+                    icon: 'error',
+
+                    title: 'Invalid File',
+
+                    text: 'Please upload a valid PDF file.'
+
+                });
+
+                return;
+
+            }
+
+
+            try {
+
+                uploadBtn.disabled = true;
+
+                uploadBtn.innerHTML = `
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Uploading...
+                `;
+
+
+                // Create FormData
+
+                const formData = new FormData();
+
+                formData.append('pdf_file', file);
+
+                formData.append('filename', file.name);
+
+
+                // Send PDF to Flask backend
+
+                const response = await fetch('/upload', {
+
+                    method: 'POST',
+
+                    body: formData
+
+                });
+
+
+                await processUploadResponse(response);
+
+
+            } catch (error) {
+
+                console.error('Upload Error:', error);
+
+                Swal.fire({
+
+                    icon: 'error',
+
+                    title: 'Upload Failed',
+
+                    text: error.message || 'Something went wrong while uploading your PDF.'
+
+                });
+
+            } finally {
+
+                uploadBtn.disabled = false;
+
+                uploadBtn.innerHTML = `
+                    <i class="fa-solid fa-upload"></i>
+                    Upload PDF
+                `;
+
+            }
+
+        });
+
+
+
+        // Process Upload Response
+
+        async function processUploadResponse(response) {
+
+            if (!response.ok) {
+
+                throw new Error(`Upload failed. Status: ${response.status}`);
+
+            }
+
+
+            const json = await response.json();
+
+
+            if (json.msg === 'error') {
+
+                Swal.fire({
+
+                    icon: 'error',
+
+                    title: 'Upload Error',
+
+                    text: json.error || 'Maximum number of pages exceeded.'
+
+                });
+
+                return;
+
+            }
+
+
+            // Display result section
+
+            result.style.display = 'block';
+
+            loader.style.display = 'block';
+
+            download.style.display = 'none';
+
+
+            // Display uploaded PDF
+
+            if (!json.pdf_filename) {
+
+                throw new Error('PDF filename missing from server response.');
+
+            }
+
+            viewPdf.src = '/' + json.pdf_filename;
+
+
+            // Start PDF Analysis
+
+            const formData = new FormData();
+
+            formData.append('pdf_filename', json.pdf_filename);
+
+
+            const analyzeResponse = await fetch('/analyze', {
+
+                method: 'POST',
+
+                body: formData
+
+            });
+
+
+            await processAnalyzeResponse(analyzeResponse);
+
+        }
+
+
+
+        // Process Analysis Response
+
+        async function processAnalyzeResponse(response) {
+
+            if (!response.ok) {
+
+                throw new Error(`Analysis failed. Status: ${response.status}`);
+
+            }
+
+
+            const json = await response.json();
+
+
+            if (json.msg === 'error') {
+
+                throw new Error(json.error || 'Unable to analyze the PDF.');
+
+            }
+
+
+            if (!json.output_file) {
+
+                throw new Error('Generated PDF filename missing from server response.');
+
+            }
+
+
+            // Hide loader
+
+            loader.style.display = 'none';
+
+
+            // Display download section
+
+            download.style.display = 'block';
+
+
+            // Set generated PDF download URL
+
+            downloadBtn.href = '/' + json.output_file;
+
+
+            downloadBtn.innerHTML = `
+                <i class="fa-solid fa-download"></i>
+                Download Questions
+            `;
+
+        }
+
+    </script>
+
+</body>
+
+</html>
