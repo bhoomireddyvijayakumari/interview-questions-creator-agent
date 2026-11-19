@@ -220,8 +220,11 @@ This requires the configured PDF to exist at the path specified in the test scri
 
 
 ![Interview Question Creator upload page](screenshots/dashboard.png)
-![Analysis in progress](screenshots/pdf file analysis.png)
-![Generated question-answer CSV](screenshots/generated questions.png)
+
+![Analysis in progress](screenshots/pdf_file_analysis.png)
+
+![Generated question-answer CSV](screenshots/generated_questions.png)
+
 ![CSV question and answer output](screenshots/questions_csv.png)
 
 
